@@ -1,0 +1,76 @@
+@import "tailwindcss";
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  padding:0;
+  background:#030712;
+  color:white;
+  font-family:Inter,sans-serif;
+  transition:background-color .5s,color .5s;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+#root{
+  isolation:isolate;
+}
+
+.glass-panel{
+  position:relative;
+  isolation:isolate;
+}
+
+.glass-panel::before{
+  content:"";
+  position:absolute;
+  inset:1px;
+  border-radius:inherit;
+  background:
+    radial-gradient(circle at top left, rgba(255,255,255,.22), transparent 34%),
+    linear-gradient(140deg, rgba(255,255,255,.18), rgba(255,255,255,0) 44%);
+  opacity:.7;
+  pointer-events:none;
+  z-index:0;
+}
+
+.glass-panel::after{
+  content:"";
+  position:absolute;
+  top:-40%;
+  left:-30%;
+  width:60%;
+  height:180%;
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,.14), transparent);
+  transform:rotate(18deg);
+  animation:glass-sheen 10s linear infinite;
+  pointer-events:none;
+  z-index:0;
+}
+
+.glass-panel > *{
+  position:relative;
+  z-index:1;
+}
+
+@keyframes glass-sheen{
+  0%{
+    transform:translateX(-120%) rotate(18deg);
+    opacity:0;
+  }
+  12%{
+    opacity:.35;
+  }
+  22%{
+    opacity:0;
+  }
+  100%{
+    transform:translateX(240%) rotate(18deg);
+    opacity:0;
+  }
+}
