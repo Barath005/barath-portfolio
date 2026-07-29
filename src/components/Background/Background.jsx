@@ -1,5 +1,5 @@
 import { motion, useMotionTemplate, useMotionValue, useSpring } from "framer-motion";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useTheme } from "../../context/ThemeContext";
 import Stars from "./Stars";
 
@@ -17,18 +17,26 @@ const reflections = [
 
 export default function Background() {
   const { darkMode } = useTheme();
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   const parallaxX = useSpring(0, { stiffness: 28, damping: 20, mass: 1.4 });
   const parallaxY = useSpring(0, { stiffness: 28, damping: 20, mass: 1.4 });
 
   useEffect(() => {
+    const coarsePointerQuery = window.matchMedia("(pointer: coarse)");
+
     const syncViewport = () => {
       mouseX.set(window.innerWidth / 2);
       mouseY.set(window.innerHeight / 2);
+      setIsTouchDevice(coarsePointerQuery.matches || window.innerWidth < 768);
     };
 
     const handleMouseMove = (event) => {
+      if (coarsePointerQuery.matches) {
+        return;
+      }
+
       mouseX.set(event.clientX);
       mouseY.set(event.clientY);
 
@@ -42,10 +50,12 @@ export default function Background() {
     syncViewport();
     window.addEventListener("resize", syncViewport);
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    coarsePointerQuery.addEventListener("change", syncViewport);
 
     return () => {
       window.removeEventListener("resize", syncViewport);
       window.removeEventListener("mousemove", handleMouseMove);
+      coarsePointerQuery.removeEventListener("change", syncViewport);
     };
   }, [mouseX, mouseY, parallaxX, parallaxY]);
 
@@ -58,6 +68,8 @@ export default function Background() {
   const gridColor = darkMode
     ? "rgba(255,255,255,0.08)"
     : "rgba(15,23,42,0.06)";
+
+  const motionStyle = isTouchDevice ? { x: 0, y: 0 } : { x: parallaxX, y: parallaxY };
 
   return (
     <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
@@ -72,7 +84,7 @@ export default function Background() {
       <motion.div
         aria-hidden="true"
         className="absolute inset-0"
-        style={{ x: parallaxX, y: parallaxY }}
+        style={motionStyle}
       >
         <motion.div
           animate={{
@@ -124,73 +136,78 @@ export default function Background() {
         }}
       />
 
-      <motion.div className="absolute inset-0" style={{ background: mouseGlow }} />
+      {!isTouchDevice && (
+        <motion.div className="absolute inset-0" style={{ background: mouseGlow }} />
+      )}
 
-      <motion.div className="absolute inset-0" style={{ x: parallaxX, y: parallaxY }}>
+      <motion.div className="absolute inset-0" style={motionStyle}>
         <Stars darkMode={darkMode} />
       </motion.div>
 
-      {shootingStars.map((star, index) => (
-        <motion.div
-          key={index}
-          className="absolute"
-          style={{
-            top: star.top,
-            left: star.left,
-            width: star.size,
-            height: 2,
-            rotate: "-22deg",
-            background: darkMode
-              ? "linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,0.95), rgba(56,189,248,0))"
-              : "linear-gradient(90deg, rgba(255,255,255,0), rgba(14,165,233,0.75), rgba(255,255,255,0))",
-            boxShadow: darkMode
-              ? "0 0 22px rgba(56,189,248,0.45)"
-              : "0 0 18px rgba(14,165,233,0.25)",
-          }}
-          animate={{
-            x: [-40, 420],
-            y: [-10, 170],
-            opacity: [0, 0, 0.95, 0.7, 0],
-            scaleX: [0.4, 0.4, 1, 1, 0.75],
-          }}
-          transition={{
-            duration: star.duration,
-            delay: star.delay,
-            ease: "easeOut",
-            repeat: Infinity,
-            repeatDelay: 6,
-          }}
-        />
-      ))}
-
-      <div className="absolute inset-0">
-        {reflections.map((reflection, index) => (
+      {!isTouchDevice &&
+        shootingStars.map((star, index) => (
           <motion.div
             key={index}
-            className={`absolute rounded-[40px] border backdrop-blur-3xl ${
-              darkMode
-                ? "border-white/8 bg-white/4"
-                : "border-white/40 bg-white/25"
-            }`}
+            className="absolute"
             style={{
-              ...reflection,
+              top: star.top,
+              left: star.left,
+              width: star.size,
+              height: 2,
+              rotate: "-22deg",
+              background: darkMode
+                ? "linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,0.95), rgba(56,189,248,0))"
+                : "linear-gradient(90deg, rgba(255,255,255,0), rgba(14,165,233,0.75), rgba(255,255,255,0))",
               boxShadow: darkMode
-                ? "0 0 90px rgba(148,163,184,0.07)"
-                : "0 0 80px rgba(148,163,184,0.10)",
+                ? "0 0 22px rgba(56,189,248,0.45)"
+                : "0 0 18px rgba(14,165,233,0.25)",
             }}
             animate={{
-              x: [0, 20, -10, 0],
-              y: [0, -12, 16, 0],
-              opacity: darkMode ? [0.12, 0.2, 0.14] : [0.08, 0.14, 0.1],
+              x: [-40, 420],
+              y: [-10, 170],
+              opacity: [0, 0, 0.95, 0.7, 0],
+              scaleX: [0.4, 0.4, 1, 1, 0.75],
             }}
             transition={{
-              duration: 12 + index * 2,
+              duration: star.duration,
+              delay: star.delay,
+              ease: "easeOut",
               repeat: Infinity,
-              ease: "easeInOut",
+              repeatDelay: 6,
             }}
           />
         ))}
-      </div>
+
+      {!isTouchDevice && (
+        <div className="absolute inset-0">
+          {reflections.map((reflection, index) => (
+            <motion.div
+              key={index}
+              className={`absolute rounded-[40px] border backdrop-blur-3xl ${
+                darkMode
+                  ? "border-white/8 bg-white/4"
+                  : "border-white/40 bg-white/25"
+              }`}
+              style={{
+                ...reflection,
+                boxShadow: darkMode
+                  ? "0 0 90px rgba(148,163,184,0.07)"
+                  : "0 0 80px rgba(148,163,184,0.10)",
+              }}
+              animate={{
+                x: [0, 20, -10, 0],
+                y: [0, -12, 16, 0],
+                opacity: darkMode ? [0.12, 0.2, 0.14] : [0.08, 0.14, 0.1],
+              }}
+              transition={{
+                duration: 12 + index * 2,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+          ))}
+        </div>
+      )}
 
       <div
         className={`absolute inset-0 ${

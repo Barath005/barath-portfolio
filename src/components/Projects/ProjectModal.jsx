@@ -95,7 +95,7 @@ export default function ProjectModal({ project, onClose }) {
           </motion.div>
         </div>
 
-        <div className="overflow-y-auto p-5 sm:p-7 lg:p-10">
+        <div className="overflow-y-auto p-5 pr-14 pt-14 sm:p-7 sm:pr-16 sm:pt-16 lg:p-10 lg:pr-20 lg:pt-10">
           <p
             className={`text-base leading-7 sm:text-lg sm:leading-8 ${
               darkMode ? "text-gray-300" : "text-slate-600"
@@ -140,17 +140,7 @@ export default function ProjectModal({ project, onClose }) {
             </div>
           </div>
 
-          {project.isCompanyProject ? (
-            <div
-              className={`mt-10 rounded-2xl border p-4 sm:mt-12 ${
-                darkMode
-                  ? "border-white/10 bg-white/5 text-gray-300"
-                  : "border-slate-200 bg-slate-50 text-slate-600"
-              }`}
-            >
-              This is a company project, so public demo and source links are not available.
-            </div>
-          ) : (
+          {!project.isCompanyProject && (
             <div className="mt-10 flex flex-col gap-3 sm:mt-12 sm:flex-row sm:flex-wrap sm:gap-5">
               <a
                 href={project.live}
