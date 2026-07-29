@@ -11,6 +11,7 @@ body{
   color:white;
   font-family:Inter,sans-serif;
   transition:background-color .5s,color .5s;
+  -webkit-overflow-scrolling:touch;
 }
 
 *{
@@ -72,5 +73,20 @@ body{
   100%{
     transform:translateX(240%) rotate(18deg);
     opacity:0;
+  }
+}
+
+@media (pointer: coarse), (max-width: 767px){
+  html{
+    scroll-behavior:auto;
+  }
+
+  .glass-panel::after{
+    animation:none;
+    opacity:0;
+  }
+
+  .glass-panel::before{
+    opacity:.45;
   }
 }

@@ -81,47 +81,67 @@ export default function Background() {
         }`}
       />
 
-      <motion.div
-        aria-hidden="true"
-        className="absolute inset-0"
-        style={motionStyle}
-      >
+      {isTouchDevice ? (
+        <div aria-hidden="true" className="absolute inset-0">
+          <div
+            className={`absolute -left-24 -top-28 h-[480px] w-[480px] rounded-full blur-[150px] ${
+              darkMode ? "bg-cyan-500/14" : "bg-sky-300/28"
+            }`}
+          />
+          <div
+            className={`absolute bottom-[-180px] right-[-120px] h-[560px] w-[560px] rounded-full blur-[170px] ${
+              darkMode ? "bg-fuchsia-500/12" : "bg-violet-300/24"
+            }`}
+          />
+          <div
+            className={`absolute left-1/2 top-[28%] h-[420px] w-[420px] -translate-x-1/2 rounded-full blur-[150px] ${
+              darkMode ? "bg-blue-500/10" : "bg-cyan-200/22"
+            }`}
+          />
+        </div>
+      ) : (
         <motion.div
-          animate={{
-            x: [0, 120, -90, 0],
-            y: [0, -60, 90, 0],
-            scale: [1, 1.12, 0.96, 1],
-          }}
-          transition={{ duration: 24, repeat: Infinity, ease: "easeInOut" }}
-          className={`absolute -left-32 -top-40 h-[620px] w-[620px] rounded-full blur-[170px] ${
-            darkMode ? "bg-cyan-500/18" : "bg-sky-300/35"
-          }`}
-        />
+          aria-hidden="true"
+          className="absolute inset-0"
+          style={motionStyle}
+        >
+          <motion.div
+            animate={{
+              x: [0, 120, -90, 0],
+              y: [0, -60, 90, 0],
+              scale: [1, 1.12, 0.96, 1],
+            }}
+            transition={{ duration: 24, repeat: Infinity, ease: "easeInOut" }}
+            className={`absolute -left-32 -top-40 h-[620px] w-[620px] rounded-full blur-[170px] ${
+              darkMode ? "bg-cyan-500/18" : "bg-sky-300/35"
+            }`}
+          />
 
-        <motion.div
-          animate={{
-            x: [0, -160, 110, 0],
-            y: [0, 120, -70, 0],
-            scale: [1.12, 0.96, 1.08, 1.12],
-          }}
-          transition={{ duration: 28, repeat: Infinity, ease: "easeInOut" }}
-          className={`absolute bottom-[-220px] right-[-140px] h-[720px] w-[720px] rounded-full blur-[190px] ${
-            darkMode ? "bg-fuchsia-500/16" : "bg-violet-300/30"
-          }`}
-        />
+          <motion.div
+            animate={{
+              x: [0, -160, 110, 0],
+              y: [0, 120, -70, 0],
+              scale: [1.12, 0.96, 1.08, 1.12],
+            }}
+            transition={{ duration: 28, repeat: Infinity, ease: "easeInOut" }}
+            className={`absolute bottom-[-220px] right-[-140px] h-[720px] w-[720px] rounded-full blur-[190px] ${
+              darkMode ? "bg-fuchsia-500/16" : "bg-violet-300/30"
+            }`}
+          />
 
-        <motion.div
-          animate={{
-            x: [0, 90, -130, 0],
-            y: [0, -110, 70, 0],
-            scale: [0.94, 1.08, 1, 0.94],
-          }}
-          transition={{ duration: 32, repeat: Infinity, ease: "easeInOut" }}
-          className={`absolute left-1/2 top-[22%] h-[540px] w-[540px] -translate-x-1/2 rounded-full blur-[160px] ${
-            darkMode ? "bg-blue-500/14" : "bg-cyan-200/28"
-          }`}
-        />
-      </motion.div>
+          <motion.div
+            animate={{
+              x: [0, 90, -130, 0],
+              y: [0, -110, 70, 0],
+              scale: [0.94, 1.08, 1, 0.94],
+            }}
+            transition={{ duration: 32, repeat: Infinity, ease: "easeInOut" }}
+            className={`absolute left-1/2 top-[22%] h-[540px] w-[540px] -translate-x-1/2 rounded-full blur-[160px] ${
+              darkMode ? "bg-blue-500/14" : "bg-cyan-200/28"
+            }`}
+          />
+        </motion.div>
+      )}
 
       <div
         className="absolute inset-0 opacity-60 transition-opacity duration-500"
