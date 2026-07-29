@@ -30,11 +30,11 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative flex min-h-[88vh] items-center justify-center overflow-hidden px-4 pb-12 pt-24 sm:min-h-screen sm:px-6 sm:pb-20 sm:pt-32"
+      className="relative flex min-h-[88vh] items-center justify-center overflow-hidden px-4 pb-10 pt-24 sm:min-h-screen sm:px-6 sm:pb-20 sm:pt-32"
     >
-      <AuroraBackground />
-      <ParticleBackground />
-      <MouseGlow />
+      {!isTouchDevice && <AuroraBackground />}
+      {!isTouchDevice && <ParticleBackground />}
+      {!isTouchDevice && <MouseGlow />}
 
       <div className="relative z-10 mx-auto w-full max-w-5xl text-center">
         <motion.p
@@ -50,7 +50,7 @@ export default function Hero() {
           initial={isTouchDevice ? false : { opacity: 0, y: 50 }}
           animate={isTouchDevice ? { opacity: 1 } : { opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="mt-5 text-4xl font-black leading-tight sm:text-5xl md:text-6xl lg:text-7xl"
+          className="mt-4 text-[2rem] font-black leading-[1.08] sm:mt-5 sm:text-5xl md:text-6xl lg:text-7xl"
         >
           Hi, I&apos;m{" "}
           <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent">
@@ -59,12 +59,18 @@ export default function Hero() {
         </motion.h1>
 
         <div
-          className={`mt-6 min-h-[72px] text-lg sm:mt-8 sm:min-h-[48px] sm:text-2xl md:text-3xl ${
+          className={`mt-5 min-h-[96px] px-2 text-base sm:mt-8 sm:min-h-[48px] sm:px-0 sm:text-2xl md:text-3xl ${
             darkMode ? "text-gray-300" : "text-slate-600"
           }`}
         >
-          <p className="mx-auto max-w-3xl font-semibold leading-relaxed text-cyan-400">
-            Angular Developer • React Developer • Frontend Engineer
+          <p className="mx-auto max-w-[18rem] font-semibold leading-relaxed text-cyan-400 sm:max-w-3xl">
+            Angular Developer
+            <span className="hidden sm:inline">
+              {" "}
+              • React Developer • Frontend Engineer
+            </span>
+            <span className="block sm:hidden">React Developer</span>
+            <span className="block sm:hidden">Frontend Engineer</span>
           </p>
         </div>
 
@@ -72,7 +78,7 @@ export default function Hero() {
           initial={isTouchDevice ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8 }}
-          className={`mx-auto mt-8 max-w-2xl text-base leading-7 sm:mt-10 sm:text-lg ${
+          className={`mx-auto mt-6 max-w-xl text-sm leading-6 sm:mt-10 sm:max-w-2xl sm:text-lg sm:leading-7 ${
             darkMode ? "text-gray-400" : "text-slate-600"
           }`}
         >
@@ -84,7 +90,7 @@ export default function Hero() {
           initial={isTouchDevice ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1 }}
-          className="mt-10 flex flex-col justify-center gap-4 sm:mt-12 sm:flex-row sm:gap-6"
+          className="mt-8 flex flex-col justify-center gap-3 sm:mt-12 sm:flex-row sm:gap-6"
         >
           <button
             onClick={() => scrollToSection("projects")}

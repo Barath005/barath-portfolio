@@ -17,6 +17,7 @@ import { useEffect, useState } from "react";
 export default function App() {
   const { darkMode } = useTheme();
   const [loading, setLoading] = useState(true);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -41,6 +42,22 @@ export default function App() {
     };
   }, []);
 
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(pointer: coarse)");
+    const updateTouchState = () => {
+      setIsTouchDevice(mediaQuery.matches || window.innerWidth < 768);
+    };
+
+    updateTouchState();
+    window.addEventListener("resize", updateTouchState);
+    mediaQuery.addEventListener("change", updateTouchState);
+
+    return () => {
+      window.removeEventListener("resize", updateTouchState);
+      mediaQuery.removeEventListener("change", updateTouchState);
+    };
+  }, []);
+
   return (
     <div
       className={
@@ -51,12 +68,21 @@ export default function App() {
     >
       <AnimatePresence>{loading && <Loader />}</AnimatePresence>
 
-      <Background />
+      {!isTouchDevice && <Background />}
+      {isTouchDevice && (
+        <div
+          className={`fixed inset-0 z-0 ${
+            darkMode
+              ? "bg-[radial-gradient(circle_at_top,#0b1120_0%,#050816_48%,#02030a_100%)]"
+              : "bg-[radial-gradient(circle_at_top,#f8fbff_0%,#eef4ff_45%,#e2ebf7_100%)]"
+          }`}
+        />
+      )}
 
       <div className="relative z-10">
         <Cursor />
 
-        <ScrollProgress />
+        {!isTouchDevice && <ScrollProgress />}
 
         <Navbar />
 
