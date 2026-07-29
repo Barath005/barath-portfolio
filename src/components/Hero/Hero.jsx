@@ -50,16 +50,16 @@ export default function Hero() {
           initial={isTouchDevice ? false : { opacity: 0, y: 50 }}
           animate={isTouchDevice ? { opacity: 1 } : { opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="mt-4 text-[2rem] font-black leading-[1.08] sm:mt-5 sm:text-5xl md:text-6xl lg:text-7xl"
+          className="mt-4 text-[2rem] font-black leading-[1.2] sm:mt-5 sm:text-5xl sm:leading-tight md:text-6xl lg:text-7xl"
         >
-          Hi, I&apos;m{" "}
+          <span className="block sm:inline">Hi, I&apos;m </span>
           <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent">
             Barath
           </span>
         </motion.h1>
 
         <div
-          className={`mt-5 min-h-[96px] px-2 text-base sm:mt-8 sm:min-h-[48px] sm:px-0 sm:text-2xl md:text-3xl ${
+          className={`mt-8 min-h-[112px] px-2 text-base sm:mt-8 sm:min-h-[48px] sm:px-0 sm:text-2xl md:text-3xl ${
             darkMode ? "text-gray-300" : "text-slate-600"
           }`}
         >
